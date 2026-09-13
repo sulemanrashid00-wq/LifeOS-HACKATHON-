@@ -6,17 +6,72 @@ export default function SimulatorDeck() {
   const { triggerEvent, state } = useEmergencyStore();
   const { playBlip, playImpactKlaxon, playRerouteTone } = useAudioFx();
 
-  const handleCrash = () => { playImpactKlaxon(); triggerEvent('/simulate/crash'); };
-  const handleUnresponsive = () => { playBlip(); setTimeout(playBlip, 150); triggerEvent('/simulate/unresponsive'); };
-  const handleGridlock = () => { playRerouteTone(); triggerEvent('/simulate/gridlock'); };
-  const handleReset = () => { playBlip(); triggerEvent('/simulate/reset'); };
+  const handleCrash = () => { 
+    playImpactKlaxon(); 
+    const currentState = useEmergencyStore.getState().state;
+    useEmergencyStore.setState({ 
+      state: { 
+        ...currentState, 
+        status: "ACTIVE_EMERGENCY", 
+        telemetry: { ...currentState.telemetry, impact_g: 6.8, decibel_level: 94 },
+        triage: { ...currentState.triage, severity: "CRITICAL", victim_responsive: false },
+        timeline: [{ timestamp: new Date().toISOString(), event: "7.2G Impact detected" }] 
+      } 
+    }); 
+  };
+  
+  const handleUnresponsive = () => { 
+    playBlip(); setTimeout(playBlip, 150); 
+    const currentState = useEmergencyStore.getState().state;
+    useEmergencyStore.setState({ 
+      state: { 
+        ...currentState, 
+        status: "DISPATCHED", 
+        plan_version: 2,
+        allocation: { ambulance_id: "AMB-04", target_hospital: "Jinnah Trauma Center (Hospital B)", eta_minutes: 6, hospital_status: "AVAILABLE", rationale: "Level-1 Trauma", math_breakdown: "Score: 0.94", rejected_facilities: [] },
+        timeline: [{ timestamp: new Date().toISOString(), event: "Dispatched AMB-04 to Jinnah Trauma Center" }, ...currentState.timeline] 
+      } 
+    });
+  };
+  
+  const handleGridlock = () => { 
+    playRerouteTone(); 
+    const currentState = useEmergencyStore.getState().state;
+    useEmergencyStore.setState({ 
+      state: { 
+        ...currentState, 
+        status: "RE_PLANNING", 
+        plan_version: 3,
+        allocation: { ...currentState.allocation!, hospital_status: "GRIDLOCK" },
+        timeline: [{ timestamp: new Date().toISOString(), event: "Jinnah reported gridlock. Rerouting..." }, ...currentState.timeline]
+      } 
+    });
+    setTimeout(() => {
+      const s = useEmergencyStore.getState().state;
+      useEmergencyStore.setState({ 
+        state: { 
+          ...s, 
+          status: "DISPATCHED", 
+          plan_version: 4,
+          allocation: { ambulance_id: "AMB-04", target_hospital: "Aga Khan University Hospital (Hospital C)", eta_minutes: 11, hospital_status: "AVAILABLE", rationale: "Gridlock Reroute", math_breakdown: "Score: 0.88", rejected_facilities: [] }
+        } 
+      });
+    }, 800);
+  };
+  
+  const handleReset = () => { 
+    playBlip(); 
+    useEmergencyStore.getState().triggerSimulationStep(0); 
+  };
 
-  const handleFullDemo = async () => {
+  const handleFullDemo = () => {
     handleCrash();
-    await new Promise(r => setTimeout(r, 2000));
-    handleUnresponsive();
-    await new Promise(r => setTimeout(r, 4000));
-    handleGridlock();
+    setTimeout(() => {
+      handleUnresponsive();
+      setTimeout(() => {
+        handleGridlock();
+      }, 3000);
+    }, 2000);
   };
 
   return (

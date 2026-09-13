@@ -1,4 +1,5 @@
 'use client';
+import "leaflet/dist/leaflet.css";
 import { useEffect, useState, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Polyline, Circle, useMap } from 'react-leaflet';
 import L from 'leaflet';
@@ -126,11 +127,11 @@ export default function LeafletCore({ state }: { state: any }) {
   }, [targetCoords?.[0], targetCoords?.[1], state.plan_version]);
 
   return (
-    <MapContainer center={center} zoom={13} zoomControl={false} className="w-full h-full rounded-lg bg-[#030712]">
+    <MapContainer center={center} zoom={13} zoomControl={false} className="w-full h-full rounded-lg bg-[#030712]" style={{ height: '420px', width: '100%', minHeight: '400px' }}>
       <TileLayer 
-        url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png"
-        subdomains={['a', 'b', 'c', 'd']}
-        attribution="&copy; CartoDB"
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution="&copy; OpenStreetMap contributors"
+        className="filter invert-[100%] hue-rotate-180 brightness-95 contrast-90"
       />
       
       {isEmergency && (
