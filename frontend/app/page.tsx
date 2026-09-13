@@ -25,10 +25,10 @@ export default function CommandCenter() {
 
 
   return (
-    <main className="min-h-screen bg-[#030712] tactical-grid p-4 font-mono text-slate-300 scanlines flex flex-col h-screen overflow-hidden selection:bg-[#00f0ff] selection:text-[#030712]">
+    <main className="h-screen max-h-screen w-screen overflow-hidden bg-[#030712] text-slate-100 flex flex-col p-3 font-mono scanlines tactical-grid selection:bg-[#00f0ff] selection:text-[#030712]">
       
       {/* Top Navigation Bar */}
-      <header className="flex justify-between items-end border-b border-[#00f0ff]/30 pb-3 mb-4 z-10 bg-[#030712]/90 backdrop-blur-md px-2">
+      <header className="flex justify-between items-end border-b border-[#00f0ff]/30 pb-3 mb-4 z-10 bg-[#030712]/90 backdrop-blur-md px-2 flex-shrink-0">
         <div className="flex items-center gap-4">
           <div className="relative flex items-center justify-center w-6 h-6">
             <div className={`absolute w-3 h-3 rounded-full ${state.status !== 'NORMAL' ? 'bg-[#ff1744] glow-crimson' : 'bg-[#00e676]'}`} />
@@ -59,30 +59,37 @@ export default function CommandCenter() {
       </header>
 
       {/* Main Grid */}
-      <div className="grid grid-cols-12 gap-5 flex-grow overflow-hidden z-10 px-2 pb-2">
+      <div className="flex gap-4 flex-grow overflow-hidden z-10 px-2 pb-2 h-full">
         {/* Left Column (Sensors & Hospitals) */}
-        <div className="col-span-3 flex flex-col gap-4 h-full">
+        <div className="w-1/4 flex flex-col gap-4 h-full overflow-hidden">
           <SensorHUD state={state} />
-          <HospitalMatrix state={state} />
+          <div className="flex-grow overflow-hidden flex flex-col">
+            <HospitalMatrix state={state} />
+          </div>
         </div>
 
         {/* Center Column (Swarm HUD, Tactical Map & Controls) */}
-        <div className="col-span-6 flex flex-col relative h-full">
-          <AgentSwarmHUD state={state} />
+        <div className="w-1/2 flex flex-col relative h-full overflow-hidden gap-4">
+          <div className="h-[110px] flex-shrink-0">
+            <AgentSwarmHUD state={state} />
+          </div>
           
-          <div className="flex-grow glass-panel rounded-lg relative overflow-hidden shadow-xl border-[#00f0ff]/30">
+          <div className="flex-grow glass-panel rounded-lg relative overflow-hidden shadow-[0_0_20px_rgba(0,240,255,0.08)] border border-[#00f0ff]/25 backdrop-blur-md">
              <TacticalMap state={state} />
              {/* Reticle Decor */}
              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 border border-[#00f0ff]/10 rounded-full pointer-events-none" />
              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 border border-[#00f0ff]/5 rounded-full pointer-events-none" />
+             
+             <SimulatorDeck />
           </div>
-          <SimulatorDeck />
         </div>
 
         {/* Right Column (Comms & Audit) */}
-        <div className="col-span-3 flex flex-col gap-4 h-full">
+        <div className="w-1/4 flex flex-col gap-4 h-full overflow-hidden">
           <StakeholderPortals state={state} />
-          <AuditTimeline state={state} />
+          <div className="flex-grow overflow-hidden flex flex-col relative">
+            <AuditTimeline state={state} />
+          </div>
         </div>
       </div>
     </main>

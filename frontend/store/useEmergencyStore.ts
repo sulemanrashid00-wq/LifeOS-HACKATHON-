@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { EmergencyState } from '../types/emergency';
 
 interface StoreState {
-  state: EmergencyState | null;
+  state: EmergencyState;
   ws: WebSocket | null;
   connect: () => void;
   triggerEvent: (endpoint: string) => Promise<void>;

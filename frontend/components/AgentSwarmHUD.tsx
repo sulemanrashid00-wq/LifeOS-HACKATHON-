@@ -43,12 +43,12 @@ function AgentNode({ title, isActive, text, highlight }: any) {
   let textColor = isActive ? (highlight ? 'text-[#ff9100]' : 'text-[#00e676]') : 'text-slate-500';
 
   return (
-    <div className={`flex-1 p-2 rounded border ${border} ${bg} ${glow} transition-all duration-300 relative overflow-hidden flex flex-col justify-between h-20`}>
-       <div className="flex items-center gap-1.5 mb-2">
-         <div className={`w-1.5 h-1.5 rounded-full ${dot}`} />
-         <span className={`font-bold ${textColor}`}>{title}</span>
+    <div className={`flex-1 p-2 rounded border ${border} ${bg} ${glow} transition-all duration-300 relative overflow-hidden flex flex-col justify-between min-h-[85px] h-[85px]`}>
+       <div className="flex items-center gap-1.5 mb-1">
+         <div className={`flex-shrink-0 w-1.5 h-1.5 rounded-full ${dot}`} />
+         <span className={`font-bold ${textColor} truncate`}>{title}</span>
        </div>
-       <div className={`leading-tight ${isActive ? 'text-slate-200' : 'text-slate-500 italic'}`}>
+       <div className={`leading-tight text-[8px] overflow-hidden ${isActive ? 'text-slate-200' : 'text-slate-500 italic'}`}>
           {text}
        </div>
     </div>

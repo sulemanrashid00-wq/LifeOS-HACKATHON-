@@ -23,6 +23,10 @@ function MapUpdater({ center, target }: { center: [number, number], target: [num
   const prevTargetRef = useRef<string>('');
 
   useEffect(() => {
+    setTimeout(() => { map.invalidateSize(); }, 150);
+  }, [map]);
+
+  useEffect(() => {
     const tStr = target ? `${target[0]},${target[1]}` : 'none';
     if (prevTargetRef.current !== tStr) {
       if (target) {
@@ -122,11 +126,11 @@ export default function LeafletCore({ state }: { state: any }) {
   }, [targetCoords?.[0], targetCoords?.[1], state.plan_version]);
 
   return (
-    <MapContainer center={center} zoom={13} zoomControl={false} className="h-full w-full bg-[#030712]">
+    <MapContainer center={center} zoom={13} zoomControl={false} className="w-full h-full rounded-lg bg-[#030712]">
       <TileLayer 
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution="&copy; OpenStreetMap contributors"
-        className="filter invert-[100%] hue-rotate-180 brightness-95 contrast-90"
+        url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png"
+        subdomains={['a', 'b', 'c', 'd']}
+        attribution="&copy; CartoDB"
       />
       
       {isEmergency && (
