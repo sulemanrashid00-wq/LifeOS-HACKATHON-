@@ -1,0 +1,32 @@
+[
+  {
+    "id": "HOSP-01",
+    "name": "Clifton General Clinic",
+    "lat": 24.8250,
+    "lng": 67.0300,
+    "trauma_capable": false,
+    "icu_beds_free": 5,
+    "distance_km": 3.1,
+    "base_eta_min": 6
+  },
+  {
+    "id": "HOSP-02",
+    "name": "Jinnah Trauma Center (Hospital B)",
+    "lat": 24.8530,
+    "lng": 67.0450,
+    "trauma_capable": true,
+    "icu_beds_free": 8,
+    "distance_km": 6.4,
+    "base_eta_min": 8
+  },
+  {
+    "id": "HOSP-03",
+    "name": "Aga Khan University Hospital (Hospital C)",
+    "lat": 24.8920,
+    "lng": 67.0740,
+    "trauma_capable": true,
+    "icu_beds_free": 7,
+    "distance_km": 11.2,
+    "base_eta_min": 14
+  }
+]
